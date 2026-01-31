@@ -1,16 +1,22 @@
 {
   "name": "Java & Docker",
-  "image": "mcr.microsoft.com/devcontainers/java:17",
+  "image": "mcr.microsoft.com/devcontainers/java:1-17-bullseye",
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "enableNonRootDocker": "true",
+      "moby": "true"
+    }
   },
   "customizations": {
     "vscode": {
       "extensions": [
-        "vscjava.vscode-java-pack",
-        "gabrielbb.vscode-lombok"
+        "vscjava.vscode-java-pack"
       ]
     }
   },
-  "forwardPorts": [8081]
+  "forwardPorts": [
+    8081
+  ],
+  "remoteUser": "vscode"
 }
