@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: hospital-app
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: DB_URL
+        fromDatabase:
+          name: hospital-postgres
+          property: connectionString
+      - key: DB_USERNAME
+        fromDatabase:
+          name: hospital-postgres
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: hospital-postgres
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRATION
+        value: 86400000
+      - key: SPRING_MAIL_ENABLED
+        value: false
+      - key: FILE_UPLOAD_DIR
+        value: /app/uploads/appointments
+
+databases:
+  - name: hospital-postgres
+    databaseName: hospitaldb
+    user: hospitaluser
