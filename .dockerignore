@@ -1,0 +1,16 @@
+target/
+.mvn/
+mvnw
+mvnw.cmd
+*.md
+.git
+.gitignore
+.idea
+.vscode
+*.iml
+.DS_Store
+build_error.txt
+build_debug.txt
+error_log.txt
+test_*.txt
+*.log

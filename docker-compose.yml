@@ -1,0 +1,60 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: hospital-postgres
+    environment:
+      POSTGRES_DB: hospitaldb
+      POSTGRES_USER: hospitaluser
+      POSTGRES_PASSWORD: hospitalpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hospitaluser"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hospital-network
+
+  # Spring Boot Application
+  hospital-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hospital-app
+    ports:
+      - "8081:8081"
+    environment:
+      # Database Configuration
+      DB_URL: jdbc:postgresql://postgres:5432/hospitaldb
+      DB_USERNAME: hospitaluser
+      DB_PASSWORD: hospitalpass
+      
+      # JWT Configuration
+      JWT_SECRET: hospital-appointment-secret-key-123456-docker
+      JWT_EXPIRATION: 86400000
+      
+      # Mail Configuration (optional - can be disabled)
+      SPRING_MAIL_ENABLED: false
+      
+      # File Upload
+      FILE_UPLOAD_DIR: /app/uploads/appointments
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - hospital-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  uploads_data:
+
+networks:
+  hospital-network:
+    driver: bridge
