@@ -1,0 +1,16 @@
+{
+  "name": "Java & Docker",
+  "image": "mcr.microsoft.com/devcontainers/java:17",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "gabrielbb.vscode-lombok"
+      ]
+    }
+  },
+  "forwardPorts": [8081]
+}
